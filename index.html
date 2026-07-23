@@ -205,6 +205,8 @@
   .apply-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 5px; height: 5px; background: var(--brass); border-radius: 50%; }
   .apply-card .btn { align-self: flex-start; margin-top: 0.3rem; }
   .apply-note { margin: 0; font-size: 0.74rem; color: var(--sage-dim); }
+  .community-form { max-width: 480px; }
+  .community-submit { cursor: pointer; font-family: var(--sans); align-self: flex-start; background: transparent; -webkit-appearance: none; appearance: none; }
 
   /* ---- Ticket request form ---- */
   .form-grid { display: grid; grid-template-columns: 0.82fr 1fr; gap: clamp(1.8rem, 4vw, 3.4rem); align-items: start; }
@@ -533,6 +535,38 @@
     </div>
   </section>
 
+  <section class="band" id="community">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Community</p>
+        <h2>Not in Munich? Stay close.</h2>
+        <p class="section-lede">GILTC is coming to more cities. Join the community to hear when we're near you &mdash; and to get invited to local events between editions.</p>
+      </div>
+      <form class="apply-form community-form" id="communityForm" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="c-email">Email</label>
+            <input id="c-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="c-city">Your city</label>
+            <select id="c-city" name="city" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option>Munich</option>
+              <option>Miami</option>
+              <option>Dubai</option>
+              <option>Tokyo</option>
+              <option>San Diego</option>
+              <option>Elsewhere</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-ghost community-submit">Join the community <span class="arw">&rarr;</span></button>
+        <p class="form-note" id="communityNote">No spam &mdash; occasional notes about GILTC near you.</p>
+      </form>
+    </div>
+  </section>
+
   <section class="band apply-band">
     <div class="wrap">
       <div class="apply-inner">
@@ -623,6 +657,7 @@
       <a href="#premise">Why GILTC</a>
       <a href="#how">How It Works</a>
       <a href="#request">Request Ticket</a>
+      <a href="#community">Community</a>
       <a href="mailto:hello@giltc.club">Contact</a>
     </nav>
     <div class="fmeta">&copy; 2026 GILTC</div>
@@ -686,6 +721,50 @@
         btn.disabled = false;
         btn.innerHTML = original;
         fallbackMsg('Something went wrong sending your request.');
+      });
+    });
+  })();
+
+  (function () {
+    var form = document.getElementById('communityForm');
+    if (!form) return;
+    var note = document.getElementById('communityNote');
+
+    /* Paste a SECOND Zapier "Catch Hook" URL here to collect community sign-ups. */
+    var ENDPOINT = '';
+
+    function mailFallback(lead) {
+      note.className = 'form-note err';
+      note.innerHTML = lead + ' Email <a href="mailto:hello@giltc.club">hello@giltc.club</a> to be added.';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      var data = Object.fromEntries(new FormData(form).entries());
+
+      if (!ENDPOINT) {
+        mailFallback('Community sign-up is not connected yet.');
+        return;
+      }
+
+      var btn = form.querySelector('.community-submit');
+      var original = btn.innerHTML;
+      btn.disabled = true;
+      btn.textContent = 'Joining...';
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (r) {
+        if (!r.ok) throw new Error('bad status');
+        form.innerHTML = '<div class="apply-done"><h3>You are on the list</h3>' +
+          '<p>We will be in touch when GILTC comes to your city.</p></div>';
+      }).catch(function () {
+        btn.disabled = false;
+        btn.innerHTML = original;
+        mailFallback('Something went wrong.');
       });
     });
   })();
