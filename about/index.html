@@ -405,6 +405,14 @@
   .langsw button:hover{color:var(--chalk)}
   .langsw button[aria-pressed="true"]{color:#1a1409;background:var(--brass);font-weight:700}
   @media (max-width:720px){ .nav{gap:.9rem} .langsw button{padding:.5em .6em} }
+
+  /* ===== glow cursor (brass spotlight follows pointer) ===== */
+  .cursor-glow{position:fixed;top:0;left:0;width:460px;height:460px;border-radius:50%;z-index:1;
+    pointer-events:none;opacity:0;transition:opacity .5s ease;will-change:transform;
+    background:radial-gradient(circle,rgba(198,161,91,.12),rgba(198,161,91,.04) 40%,transparent 62%);
+    mix-blend-mode:screen}
+  @media (hover:none){.cursor-glow{display:none}}
+  @media (prefers-reduced-motion:reduce){.cursor-glow{display:none}}
 </style>
 <style>
   .evt-hero{position:relative;min-height:84vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid rgba(236,231,218,.07)}
@@ -430,6 +438,8 @@
   .img-band .cap p{font-family:var(--serif);font-size:clamp(1.4rem,3.4vw,2.4rem);color:var(--chalk);margin:0;max-width:24ch}
 </style>
 
+
+<div class="cursor-glow" aria-hidden="true"></div>
 <header class="site-head">
   <div class="wrap head-inner">
     <a class="mark" href="https://future-courts.com/#top">
@@ -835,6 +845,21 @@
   document.querySelectorAll('.langsw button').forEach(function(b){b.addEventListener('click',function(){apply(b.getAttribute('data-lang'));});});
   var saved='en'; try{saved=localStorage.getItem('fc-lang')||'en';}catch(e){}
   apply(saved);
+})();
+</script>
+
+<script>
+(function(){
+  var g=document.querySelector('.cursor-glow'); if(!g) return;
+  if(window.matchMedia('(hover:none)').matches||window.matchMedia('(prefers-reduced-motion: reduce)').matches){ g.style.display='none'; return; }
+  var tx=innerWidth/2,ty=innerHeight*0.35,cx=tx,cy=ty,shown=false,raf=0;
+  function loop(){ raf=0; cx+=(tx-cx)*0.15; cy+=(ty-cy)*0.15;
+    g.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px) translate(-50%,-50%)';
+    if(Math.abs(tx-cx)>0.4||Math.abs(ty-cy)>0.4) raf=requestAnimationFrame(loop); }
+  window.addEventListener('pointermove',function(e){ tx=e.clientX; ty=e.clientY;
+    if(!shown){ shown=true; g.style.opacity='1'; } if(!raf) raf=requestAnimationFrame(loop); },{passive:true});
+  document.addEventListener('mouseleave',function(){ g.style.opacity='0'; });
+  document.addEventListener('mouseenter',function(){ if(shown) g.style.opacity='1'; });
 })();
 </script>
 
