@@ -479,6 +479,15 @@
   @media (hover:none){.glare{display:none}}
 
   .site-foot{background:#0a1711;border-top:1px solid var(--brass-soft);padding-block:3rem}
+
+  /* ===== mobile nav: show links on their own row ===== */
+  @media (max-width:720px){
+    .head-inner{flex-wrap:wrap;row-gap:.75rem}
+    .nav{order:3;width:100%;justify-content:center;flex-wrap:wrap;gap:.6rem 1.1rem}
+    .nav .link{display:inline-flex;font-size:.82rem}
+    .nav .link.btn{padding:.6em 1.1em}
+    .langsw{margin-left:0}
+  }
 </style>
 <style>
   .evt-hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid rgba(236,231,218,.07)}
