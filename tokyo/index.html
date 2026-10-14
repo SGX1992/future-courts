@@ -460,13 +460,6 @@
   @keyframes au3{from{transform:translate(0,0) scale(1)}to{transform:translate(4vw,-5vw) scale(1.14)}}
   @media (prefers-reduced-motion:reduce){.hero-aurora .au{animation:none}.hero-particles{display:none}}
 
-  /* ===== glow cursor (brass spotlight follows pointer) ===== */
-  .cursor-glow{position:fixed;top:0;left:0;width:460px;height:460px;border-radius:50%;z-index:1;
-    pointer-events:none;opacity:0;transition:opacity .5s ease;will-change:transform;
-    background:radial-gradient(circle,rgba(198,161,91,.12),rgba(198,161,91,.04) 40%,transparent 62%);
-    mix-blend-mode:screen}
-  @media (hover:none){.cursor-glow{display:none}}
-  @media (prefers-reduced-motion:reduce){.cursor-glow{display:none}}
 
   /* ===== clickable Tokyo city tile ===== */
   .citylink{cursor:pointer}
@@ -484,6 +477,8 @@
   .venue-grid figure:hover .glare::before,.exp-grid figure:hover .glare::before{transform:translateX(130%);opacity:1}
   @media (prefers-reduced-motion:reduce){.glare::before{display:none}}
   @media (hover:none){.glare{display:none}}
+
+  .site-foot{background:#0a1711;border-top:1px solid var(--brass-soft);padding-block:3rem}
 </style>
 <style>
   .evt-hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid rgba(236,231,218,.07)}
@@ -524,7 +519,6 @@
 </style>
 
 
-<div class="cursor-glow" aria-hidden="true"></div>
 <header class="site-head">
   <div class="wrap head-inner">
     <a class="mark" href="https://future-courts.com/#top">
@@ -972,20 +966,6 @@
 })();
 </script>
 
-<script>
-(function(){
-  var g=document.querySelector('.cursor-glow'); if(!g) return;
-  if(window.matchMedia('(hover:none)').matches||window.matchMedia('(prefers-reduced-motion: reduce)').matches){ g.style.display='none'; return; }
-  var tx=innerWidth/2,ty=innerHeight*0.35,cx=tx,cy=ty,shown=false,raf=0;
-  function loop(){ raf=0; cx+=(tx-cx)*0.15; cy+=(ty-cy)*0.15;
-    g.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px) translate(-50%,-50%)';
-    if(Math.abs(tx-cx)>0.4||Math.abs(ty-cy)>0.4) raf=requestAnimationFrame(loop); }
-  window.addEventListener('pointermove',function(e){ tx=e.clientX; ty=e.clientY;
-    if(!shown){ shown=true; g.style.opacity='1'; } if(!raf) raf=requestAnimationFrame(loop); },{passive:true});
-  document.addEventListener('mouseleave',function(){ g.style.opacity='0'; });
-  document.addEventListener('mouseenter',function(){ if(shown) g.style.opacity='1'; });
-})();
-</script>
 
 <script>(function(){document.querySelectorAll('.venue-grid figure, .exp-grid figure').forEach(function(el){if(el.querySelector(':scope > .glare'))return;var g=document.createElement('span');g.className='glare';el.appendChild(g);});})();</script>
 
