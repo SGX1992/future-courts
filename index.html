@@ -39,7 +39,7 @@
     letter-spacing: 0.24em; text-transform: uppercase; color: var(--brass); margin: 0;
   }
 
-  h1, h2, h3 { font-family: var(--serif); font-weight: 700; text-wrap: balance; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 700; text-wrap: balance; letter-spacing: -0.04em; }
   a { color: inherit; }
 
   .btn {
@@ -78,7 +78,7 @@
   .hero { padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 7vw, 5.5rem); }
   .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
   @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
-  .hero h1 { font-size: clamp(2.7rem, 6.2vw, 4.9rem); line-height: 1.03; letter-spacing: -0.012em; margin: 1.4rem 0 0; }
+  .hero h1 { font-size: clamp(2.7rem, 6.2vw, 4.9rem); line-height: 1.03; letter-spacing: -0.04em; margin: 1.4rem 0 0; }
   .hero h1 em { font-style: italic; color: var(--brass); }
   .hero .lede { max-width: 36ch; margin: 1.6rem 0 0; color: var(--sage); font-size: 1.12rem; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.2rem; }
@@ -172,7 +172,7 @@
   .founding-price strong { color: var(--brass); font-weight: 600; }
 
   /* ---- Founder ---- */
-  .founder { position: relative; display: flex; align-items: center; gap: 1.1rem; margin-top: 2.1rem; padding-top: 1.5rem; border-top: 1px solid rgba(236,231,218,0.07); }
+  .founder { position: relative; display: flex; align-items: center; gap: 1.1rem; cursor: pointer; margin-top: 2.1rem; padding-top: 1.5rem; border-top: 1px solid rgba(236,231,218,0.07); }
   .founder .avatar {
     width: 132px; height: 132px; border-radius: 50%; flex: none; overflow: hidden;
     border: 1px solid var(--brass-soft); background: var(--court-panel); padding: 0;
@@ -527,6 +527,9 @@
     .nav .link.btn{padding:.6em 1.1em}
     .langsw{margin-left:0}
   }
+
+  /* letterspace headline-like */
+  .se-big,.pullquote p,.evt-hero h1,.bignum{letter-spacing:-0.04em}
 </style>
 
 
@@ -1001,8 +1004,9 @@
       function openBio() { bio.hidden = false; av.setAttribute('aria-expanded', 'true'); }
       function closeBio() { bio.hidden = true; av.setAttribute('aria-expanded', 'false'); }
       av.addEventListener('click', function (e) { e.stopPropagation(); if (bio.hidden) { openBio(); } else { closeBio(); } });
-      av.addEventListener('mouseenter', openBio);
+      wrap.addEventListener('mouseenter', openBio);
       wrap.addEventListener('mouseleave', closeBio);
+      wrap.addEventListener('click', function (e) { if (bio.hidden) { openBio(); } else { closeBio(); } });
       document.addEventListener('click', function (e) { if (!wrap.contains(e.target)) closeBio(); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBio(); });
     }
