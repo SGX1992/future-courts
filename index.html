@@ -396,13 +396,19 @@
   .city .sport-reveal { position:absolute; inset:0; z-index:1; background-size:cover; background-position:center; opacity:0; transition:opacity .6s cubic-bezier(.16,1,.3,1); pointer-events:none; filter:saturate(.92); }
   .city:hover .sport-reveal { opacity:1; }
 
-  /* ---- language switcher ---- */
-  .langsw{display:inline-flex;align-items:center;border:1px solid var(--brass-soft);border-radius:3px;overflow:hidden}
-  .langsw button{font-family:var(--sans);font-size:.68rem;letter-spacing:.06em;color:var(--sage);background:transparent;border:0;padding:.46em .62em;cursor:pointer;line-height:1;transition:color .2s ease,background .2s ease}
-  .langsw button+button{border-left:1px solid var(--brass-soft)}
-  .langsw button:hover{color:var(--chalk)}
-  .langsw button[aria-pressed="true"]{color:#1a1409;background:var(--brass);font-weight:700}
-  @media (max-width:720px){ .nav{gap:.9rem} .langsw button{padding:.5em .6em} }
+  /* ---- language switcher (dropdown) ---- */
+  .langsw{position:relative;display:inline-flex}
+  .langsw-toggle{display:inline-flex;align-items:center;gap:.5em;font-family:var(--sans);font-size:.72rem;letter-spacing:.06em;color:var(--sage);background:transparent;border:1px solid var(--brass-soft);border-radius:3px;padding:.52em .72em;cursor:pointer;line-height:1;transition:color .2s ease,border-color .2s ease}
+  .langsw-toggle:hover{color:var(--chalk);border-color:var(--brass)}
+  .langsw-caret{font-size:.85em;color:var(--brass);transition:transform .25s ease}
+  .langsw.open .langsw-caret{transform:rotate(180deg)}
+  .langsw-menu{position:absolute;top:calc(100% + 7px);right:0;min-width:150px;background:var(--court-panel);border:1px solid var(--brass-soft);border-radius:4px;box-shadow:0 20px 48px -18px rgba(0,0,0,.72);overflow:hidden;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:120}
+  .langsw.open .langsw-menu{opacity:1;transform:none;pointer-events:auto}
+  .langsw-menu button{display:block;width:100%;text-align:left;font-family:var(--sans);font-size:.76rem;letter-spacing:.04em;color:var(--sage);background:transparent;border:0;border-bottom:1px solid var(--court-line);padding:.72em .95em;cursor:pointer;white-space:nowrap;transition:color .2s ease,background .2s ease}
+  .langsw-menu button:last-child{border-bottom:0}
+  .langsw-menu button:hover{color:var(--chalk);background:rgba(198,161,91,.08)}
+  .langsw-menu button[aria-pressed="true"]{color:var(--brass)}
+  @media (max-width:720px){ .nav{gap:.9rem} .langsw-menu{right:auto;left:50%;transform:translate(-50%,-6px)} .langsw.open .langsw-menu{transform:translateX(-50%)} }
 
   /* ===== glare hover (glossy streak sweeps across cards) ===== */
   .glare{position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;overflow:hidden}
@@ -545,7 +551,7 @@
       <a class="link" href="#how">How It Works</a>
       <a class="link" href="/about">About</a>
       <a class="link btn btn-ghost" href="#request">Request Ticket</a>
-        <div class="langsw" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="de" aria-pressed="false">DE</button><button type="button" data-lang="ja" aria-pressed="false">日本語</button></div>
+        <div class="langsw" role="group" aria-label="Language"><button type="button" class="langsw-toggle" aria-haspopup="true" aria-expanded="false"><span class="langsw-cur">EN</span><span class="langsw-caret" aria-hidden="true">▾</span></button><div class="langsw-menu" role="menu"><button type="button" role="menuitem" data-lang="en" aria-pressed="true">EN&nbsp;&middot;&nbsp;English</button><button type="button" role="menuitem" data-lang="de" aria-pressed="false">DE&nbsp;&middot;&nbsp;Deutsch</button><button type="button" role="menuitem" data-lang="ja" aria-pressed="false">日本語</button></div></div>
     </nav>
   </div>
 </header>
@@ -1314,12 +1320,12 @@
       el.setAttribute('placeholder',(t!=null)?t:el._enph);
     });
     document.documentElement.setAttribute('lang',lang);
-    var sw=document.querySelectorAll('.langsw button');
+    var sw=document.querySelectorAll('.langsw [data-lang]');
     for(var i=0;i<sw.length;i++){ sw[i].setAttribute('aria-pressed', sw[i].getAttribute('data-lang')===lang?'true':'false'); }
     try{ localStorage.setItem('fc-lang',lang); }catch(e){}
   }
   window.__fcLang=apply;
-  document.querySelectorAll('.langsw button').forEach(function(b){
+  document.querySelectorAll('.langsw [data-lang]').forEach(function(b){
     b.addEventListener('click',function(){ apply(b.getAttribute('data-lang')); });
   });
   var saved='en'; try{ saved=localStorage.getItem('fc-lang')||'en'; }catch(e){}
@@ -1393,6 +1399,21 @@
     window.addEventListener('scroll',onScroll,{passive:true});
     window.addEventListener('resize',onScroll,{passive:true}); frame();
   });
+})();
+</script>
+
+<script>
+(function(){
+  var sw=document.querySelector('.langsw'); if(!sw) return;
+  var tog=sw.querySelector('.langsw-toggle'), cur=sw.querySelector('.langsw-cur');
+  var labels={en:'EN',de:'DE',ja:'日本語'};
+  function setLabel(){ var a=sw.querySelector('.langsw-menu button[aria-pressed="true"]'); if(a&&cur) cur.textContent=labels[a.getAttribute('data-lang')]||'EN'; }
+  function close(){ sw.classList.remove('open'); tog.setAttribute('aria-expanded','false'); }
+  setLabel();
+  tog.addEventListener('click', function(e){ e.stopPropagation(); var o=!sw.classList.contains('open'); sw.classList.toggle('open',o); tog.setAttribute('aria-expanded', o?'true':'false'); });
+  sw.querySelectorAll('.langsw-menu button').forEach(function(b){ b.addEventListener('click', function(){ setTimeout(setLabel,0); close(); }); });
+  document.addEventListener('click', function(e){ if(!sw.contains(e.target)) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
 })();
 </script>
 
