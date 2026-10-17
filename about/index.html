@@ -41,7 +41,7 @@
     letter-spacing: 0.24em; text-transform: uppercase; color: var(--brass); margin: 0;
   }
 
-  h1, h2, h3 { font-family: var(--serif); font-weight: 700; text-wrap: balance; letter-spacing: -0.04em; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 700; text-wrap: balance; letter-spacing: -0.05em; }
   a { color: inherit; }
 
   .btn {
@@ -537,7 +537,7 @@
   }
 
   /* letterspace headline-like */
-  .se-big,.pullquote p,.evt-hero h1,.bignum{letter-spacing:-0.04em}
+  .se-big,.pullquote p,.evt-hero h1,.bignum{letter-spacing:-0.05em}
 
   /* ===== consistent small radius (2px) ===== */
   .btn,.apply-card,.langsw-toggle,.langsw-menu,.founder-bio,
@@ -547,8 +547,8 @@
 
   /* ===== brand-align (Figma source of truth) ===== */
   :root{--yellow:#FFEA00;--neon:#00FFA2;}
-  h1,h2,h3{letter-spacing:-0.02em}
-  .hero h1{letter-spacing:-0.02em}
+  h1,h2,h3{letter-spacing:-0.05em}
+  .hero h1{letter-spacing:-0.05em}
   .btn-primary{color:#00230E;font-weight:700}
   .city-badge{color:#00230E}
   .hero h1 em{color:var(--yellow)}
@@ -560,6 +560,29 @@
   .site-foot .fclogo-foot path{fill:#0d1712}
   .site-foot .ig svg rect,.site-foot .ig svg circle{stroke:#0d1712}
   .site-foot .ig svg .dot{fill:#0d1712;stroke:none}
+
+  /* ===== lean pass ===== */
+  h1,h2,h3,.hero h1,.se-big,.pullquote p,.evt-hero h1,.bignum,.city .cname,.meta .mv{font-family:var(--sans)!important;letter-spacing:-0.05em!important;font-weight:700}
+  .hero h1 em{font-family:var(--serif)!important;font-style:italic;color:var(--yellow)}
+  .pullquote em{font-style:normal}
+  .pullquote.cream em{font-family:var(--serif)!important;font-style:italic;color:#0A7A4E}
+  .se-big{display:none}
+  .meta{border:none}
+  .meta div{border-right:none;transition:none}
+  .meta div:hover{background:none}
+  .gallery figure:hover img{transform:none}
+  .founder .avatar:hover,.founder .avatar:focus-visible{transform:none;box-shadow:none}
+  .sport-reveal{display:none}
+  .glare{display:none}
+  .cname::after{display:none}
+  .city .city-badge{transition:none}
+  .band-invert .tenets{border-top:1px solid rgba(10,122,78,.30);padding-top:2.2rem}
+  .gallery figure{aspect-ratio:1/1}
+  .founder .avatar{width:96px;height:96px;flex:none}
+  .site-foot{padding-block:4.5rem}
+  .fclogo-foot{height:84px}
+  .site-foot .foot-nav a{font-size:.95rem}
+  .site-foot .fmeta{font-size:.9rem}
 </style>
 <style>
   .evt-hero{position:relative;min-height:84vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid rgba(236,231,218,.07)}

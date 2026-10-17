@@ -39,7 +39,7 @@
     letter-spacing: 0.24em; text-transform: uppercase; color: var(--brass); margin: 0;
   }
 
-  h1, h2, h3 { font-family: var(--serif); font-weight: 700; text-wrap: balance; letter-spacing: -0.04em; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 700; text-wrap: balance; letter-spacing: -0.05em; }
   a { color: inherit; }
 
   .btn {
@@ -78,7 +78,7 @@
   .hero { padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 7vw, 5.5rem); }
   .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
   @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
-  .hero h1 { font-size: clamp(2.7rem, 6.2vw, 4.9rem); line-height: 1.03; letter-spacing: -0.04em; margin: 1.4rem 0 0; }
+  .hero h1 { font-size: clamp(2.7rem, 6.2vw, 4.9rem); line-height: 1.03; letter-spacing: -0.05em; margin: 1.4rem 0 0; }
   .hero h1 em { font-style: italic; color: var(--brass); }
   .hero .lede { max-width: 36ch; margin: 1.6rem 0 0; color: var(--sage); font-size: 1.12rem; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.2rem; }
@@ -535,7 +535,7 @@
   }
 
   /* letterspace headline-like */
-  .se-big,.pullquote p,.evt-hero h1,.bignum{letter-spacing:-0.04em}
+  .se-big,.pullquote p,.evt-hero h1,.bignum{letter-spacing:-0.05em}
 
   /* ===== consistent small radius (2px) ===== */
   .btn,.apply-card,.langsw-toggle,.langsw-menu,.founder-bio,
@@ -555,12 +555,12 @@
   .video-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,23,18,.52),transparent 30%,transparent 58%,rgba(13,23,18,.88))}
   .video-band .vb-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(1.6rem,5vw,3.6rem)}
   .video-band .vb-cap .eyebrow{color:var(--brass);justify-content:flex-start}
-  .video-band .vb-cap p.vb-line{font-family:var(--serif);font-weight:700;letter-spacing:-0.04em;font-size:clamp(1.7rem,4.6vw,3.3rem);color:var(--chalk);margin:.5rem 0 0;max-width:20ch;line-height:1.03}
+  .video-band .vb-cap p.vb-line{font-family:var(--serif);font-weight:700;letter-spacing:-0.05em;font-size:clamp(1.7rem,4.6vw,3.3rem);color:var(--chalk);margin:.5rem 0 0;max-width:20ch;line-height:1.03}
 
   /* ===== brand-align (Figma source of truth) ===== */
   :root{--yellow:#FFEA00;--neon:#00FFA2;}
-  h1,h2,h3{letter-spacing:-0.02em}
-  .hero h1{letter-spacing:-0.02em}
+  h1,h2,h3{letter-spacing:-0.05em}
+  .hero h1{letter-spacing:-0.05em}
   .btn-primary{color:#00230E;font-weight:700}
   .city-badge{color:#00230E}
   .hero h1 em{color:var(--yellow)}
@@ -572,6 +572,29 @@
   .site-foot .fclogo-foot path{fill:#0d1712}
   .site-foot .ig svg rect,.site-foot .ig svg circle{stroke:#0d1712}
   .site-foot .ig svg .dot{fill:#0d1712;stroke:none}
+
+  /* ===== lean pass ===== */
+  h1,h2,h3,.hero h1,.se-big,.pullquote p,.evt-hero h1,.bignum,.city .cname,.meta .mv{font-family:var(--sans)!important;letter-spacing:-0.05em!important;font-weight:700}
+  .hero h1 em{font-family:var(--serif)!important;font-style:italic;color:var(--yellow)}
+  .pullquote em{font-style:normal}
+  .pullquote.cream em{font-family:var(--serif)!important;font-style:italic;color:#0A7A4E}
+  .se-big{display:none}
+  .meta{border:none}
+  .meta div{border-right:none;transition:none}
+  .meta div:hover{background:none}
+  .gallery figure:hover img{transform:none}
+  .founder .avatar:hover,.founder .avatar:focus-visible{transform:none;box-shadow:none}
+  .sport-reveal{display:none}
+  .glare{display:none}
+  .cname::after{display:none}
+  .city .city-badge{transition:none}
+  .band-invert .tenets{border-top:1px solid rgba(10,122,78,.30);padding-top:2.2rem}
+  .gallery figure{aspect-ratio:1/1}
+  .founder .avatar{width:96px;height:96px;flex:none}
+  .site-foot{padding-block:4.5rem}
+  .fclogo-foot{height:84px}
+  .site-foot .foot-nav a{font-size:.95rem}
+  .site-foot .fmeta{font-size:.9rem}
 </style>
 
 
@@ -914,52 +937,7 @@
     </div>
   </section>
 
-  <section class="band alt apply-band">
-    <div class="wrap">
-      <div class="apply-inner">
-        <div class="apply-pitch">
-          <h2>Founding Year pricing.</h2>
-          <p>Each city hosts a curated field of 32 players &mdash; every request is reviewed personally. Not playing? The Networking Lounge puts you in the same room.</p>
-        </div>
-        <div class="apply-cards">
-          <div class="apply-card">
-            <p class="apply-card-label">Founding Year &middot; Networking Lounge</p>
-            <h2>&euro;290</h2>
-            <ul class="apply-list">
-              <li>Lounge &amp; hospitality access all day</li>
-              <li>Networking lunch, reception &amp; dinner</li>
-              <li>The full room of founders &amp; growth leaders</li>
-              <li>Courtside &mdash; watch every match</li>
-            </ul>
-            <a class="btn btn-ghost" href="#request">Request Lounge Ticket <span class="arw">&rarr;</span></a>
-          </div>
-          <div class="apply-card featured">
-            <p class="apply-card-label">Founding Year &middot; Player Ticket</p>
-            <h2>&euro;590</h2>
-            <ul class="apply-list">
-              <li>Play the day &mdash; tennis, padel or pickleball</li>
-              <li>Breakfast, networking lunch, reception &amp; dinner</li>
-              <li>Awards &amp; professional photography</li>
-              <li>Curated field of 32 &middot; networking all day</li>
-            </ul>
-            <a class="btn btn-primary" href="#request">Request Player Ticket <span class="arw">&rarr;</span></a>
-          </div>
-          <div class="apply-card">
-            <p class="apply-card-label">Founding Year &middot; Partner</p>
-            <h2>&euro;2,900</h2>
-            <ul class="apply-list">
-              <li>Named partner &mdash; logo on site &amp; on-site</li>
-              <li>2 Player tickets + Lounge access for your team</li>
-              <li>Host a moment &mdash; a toast, a session, your format</li>
-              <li>Warm introductions across the room</li>
-            </ul>
-            <a class="btn btn-ghost" href="#request">Become a Partner <span class="arw">&rarr;</span></a>
-          </div>
-        </div>
-        <p class="apply-note">Founding Year pricing is intentionally set to establish the first Future Courts community; future editions are expected to be priced higher.</p>
-      </div>
-    </div>
-  </section>
+  
 
   <section class="band" id="request">
     <div class="wrap form-grid">
