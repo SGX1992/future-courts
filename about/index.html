@@ -81,7 +81,7 @@
   .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
   @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
   .hero h1 { font-size: clamp(2.7rem, 6.2vw, 4.9rem); line-height: 1.03; letter-spacing: -0.012em; margin: 1.4rem 0 0; }
-  .hero h1 em { font-style: italic; color: var(--brass); }
+  .hero h1 em { font-style: normal; color: var(--brass); }
   .hero .lede { max-width: 36ch; margin: 1.6rem 0 0; color: var(--sage); font-size: 1.12rem; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.2rem; }
   .hero-note { margin-top: 1.4rem; font-size: 0.8rem; letter-spacing: 0.03em; color: var(--sage-dim); }
@@ -491,12 +491,12 @@
   .pb-cap{position:absolute;inset:0;z-index:3;display:flex;align-items:flex-end;padding:clamp(1.5rem,4vw,3rem)}
   .pb-cap p{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,3.8vw,2.9rem);line-height:1.05;
     color:var(--chalk);max-width:20ch;margin:0;text-shadow:0 2px 20px rgba(0,0,0,.4)}
-  .pb-cap em{color:var(--brass);font-style:italic}
+  .pb-cap em{color:var(--brass);font-style:normal}
   .pullquote{padding-block:clamp(5rem,13vw,9.5rem);text-align:center;border-block:1px solid var(--court-line);
     background:radial-gradient(90% 130% at 50% 50%,rgba(0,255,162,.07),transparent 62%)}
   .pullquote p{font-family:var(--serif);font-weight:700;font-size:clamp(2.1rem,6vw,4.8rem);line-height:1.03;
     letter-spacing:-.5px;max-width:20ch;margin:0 auto;color:var(--chalk)}
-  .pullquote em{color:var(--brass);font-style:italic}
+  .pullquote em{color:var(--brass);font-style:normal}
   /* scroll-expand */
   .se{position:relative;height:230vh}
   .se-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center;background:var(--court)}
@@ -508,7 +508,7 @@
   .se-big{position:absolute;inset:0;z-index:4;display:grid;place-items:center;text-align:center;
     padding-inline:var(--gutter);font-family:var(--serif);font-weight:700;font-size:clamp(2.2rem,7vw,6rem);
     line-height:1.02;color:var(--chalk);opacity:var(--se-content-o,0);pointer-events:none}
-  .se-big em{font-style:italic;color:var(--brass)}
+  .se-big em{font-style:normal;color:var(--brass)}
 
   /* ===== section background variety ===== */
   .band.alt{background:var(--court-panel)}
@@ -563,9 +563,9 @@
 
   /* ===== lean pass ===== */
   h1,h2,h3,.hero h1,.se-big,.pullquote p,.evt-hero h1,.bignum,.city .cname,.meta .mv{font-family:var(--sans)!important;letter-spacing:-0.05em!important;font-weight:700}
-  .hero h1 em{font-family:var(--serif)!important;font-style:italic;color:var(--yellow)}
+  .hero h1 em{font-family:var(--serif)!important;font-style:normal;color:var(--yellow)}
   .pullquote em{font-style:normal}
-  .pullquote.cream em{font-family:var(--serif)!important;font-style:italic;color:#0A7A4E}
+  .pullquote.cream em{font-family:var(--serif)!important;font-style:normal;color:#0A7A4E}
   .se-big{display:none}
   .meta{border:none}
   .meta div{border-right:none;transition:none}
@@ -595,6 +595,9 @@
   .site-foot .foot-nav{gap:1rem 2.2rem}
   .site-foot .foot-nav a{font-size:1.05rem!important}
   .site-foot .fmeta{font-size:1rem!important}
+
+  /* no-italic-ever */
+  em,i,[class*=italic]{font-style:normal!important}
 </style>
 <style>
   .evt-hero{position:relative;min-height:84vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid rgba(236,231,218,.07)}
@@ -613,7 +616,7 @@
   .band-invert .section-lede{color:#46534a;max-width:58ch;font-size:1.1rem}
   .band-invert .section-lede strong{color:#0d1712}
   .bignum{font-family:var(--serif);font-weight:700;font-size:clamp(5rem,17vw,13rem);line-height:.86;color:#0d1712;margin:.3rem 0 1.3rem;letter-spacing:-2px}
-  .bignum .bn-unit{font-size:.26em;color:#0A7A4E;margin-left:.35rem;font-style:italic;font-weight:400;letter-spacing:0}
+  .bignum .bn-unit{font-size:.26em;color:#0A7A4E;margin-left:.35rem;font-style:normal;font-weight:400;letter-spacing:0}
   .bn-cite{font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#0A7A4E;margin-top:1.5rem}
   /* full-bleed image band */
   .img-band{position:relative;overflow:hidden}
