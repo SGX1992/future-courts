@@ -639,6 +639,22 @@
 
   /* no-italic-ever */
   em,i,[class*=italic]{font-style:normal!important}
+
+  /* ===== hover micro-interactions (SANDBOX-style) ===== */
+  .nav a.link,.foot-nav a{position:relative}
+  .nav a.link::after,.foot-nav a::after{content:"";position:absolute;left:0;bottom:-3px;height:1px;width:100%;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .nav a.link:hover::after,.foot-nav a:hover::after{transform:scaleX(1)}
+  .btn{transition:transform .3s ease,background .3s ease,border-color .3s ease,color .3s ease}
+  .btn .arw{display:inline-block;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+  .btn:hover .arw{transform:translateX(5px)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-ghost:hover{border-color:var(--brass);color:var(--brass)}
+  .city,.apply-card,.photo-trio figure,.gallery figure{transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s ease}
+  .city{overflow:hidden}
+  .city:hover,.apply-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px -28px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,162,.22)}
+  .city img,.gallery figure img,.photo-trio figure img{transition:transform .6s cubic-bezier(.16,1,.3,1)}
+  .city:hover img,.gallery figure:hover img,.photo-trio figure:hover img{transform:scale(1.05)}
+  @media (prefers-reduced-motion:reduce){.city:hover,.apply-card:hover,.btn-primary:hover{transform:none}.city:hover img,.gallery figure:hover img,.photo-trio figure:hover img{transform:none}}
 </style>
 
 
