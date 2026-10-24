@@ -655,6 +655,13 @@
   .city img,.gallery figure img,.photo-trio figure img{transition:transform .6s cubic-bezier(.16,1,.3,1)}
   .city:hover img,.gallery figure:hover img,.photo-trio figure:hover img{transform:scale(1.05)}
   @media (prefers-reduced-motion:reduce){.city:hover,.apply-card:hover,.btn-primary:hover{transform:none}.city:hover img,.gallery figure:hover img,.photo-trio figure:hover img{transform:none}}
+
+  /* Lenis required CSS */
+  html.lenis,html.lenis body{height:auto}
+  .lenis.lenis-smooth{scroll-behavior:auto!important}
+  .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+  .lenis.lenis-stopped{overflow:hidden}
+  .lenis.lenis-smooth iframe{pointer-events:none}
 </style>
 
 
@@ -1492,39 +1499,47 @@
 </script>
 <script>(function(){try{if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){document.querySelectorAll("video.bgvid").forEach(function(v){v.removeAttribute("autoplay");try{v.pause();v.currentTime=0;}catch(e){}});}}catch(e){}})();</script>
 
-<!-- ===== motion layer: Lenis smooth scroll + IntersectionObserver reveals ===== -->
+<!-- ===== motion layer: Lenis smooth scroll + robust reveals ===== -->
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <script>
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce) return;
   // --- Lenis smooth scroll ---
-  if(window.Lenis){
-    var lenis = new Lenis({ duration:1.05, smoothWheel:true,
-      easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10*t)); } });
-    function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    document.querySelectorAll('a[href^="#"]').forEach(function(a){
-      a.addEventListener('click', function(e){
-        var id=a.getAttribute('href'); if(id.length<2) return;
-        var el=document.querySelector(id); if(!el) return;
-        e.preventDefault(); lenis.scrollTo(el, {offset:-70});
+  if(!reduce && window.Lenis){
+    try{
+      var lenis = new Lenis({ duration:0.9, smoothWheel:true, wheelMultiplier:1, touchMultiplier:1.6,
+        easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10*t)); } });
+      function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+      document.querySelectorAll('a[href^="#"]').forEach(function(a){
+        a.addEventListener('click', function(e){
+          var id=a.getAttribute('href'); if(id.length<2) return;
+          var el=document.querySelector(id); if(!el) return;
+          e.preventDefault(); lenis.scrollTo(el, {offset:-70});
+        });
       });
-    });
+    }catch(e){}
   }
-  // --- reveals (IntersectionObserver; JS adds the hidden state, so no-JS stays visible) ---
-  if('IntersectionObserver' in window){
-    var sel = '.band .eyebrow,.band h2,.band h3,.section-lede,.rule,.step,.apply-card,.meta,.founder,.line-q,.bignum,.pb-cap,.city,.gallery figure,.photo-trio figure,.tenet';
+  // --- reveals: native scroll based (cannot leave content hidden) ---
+  if(!reduce){
+    var sel = '.band .eyebrow,.band h2,.band h3,.section-lede,.rule,.step,.apply-card,.meta,.founder-feature,.line-q,.bignum,.pb-cap,.city,.gallery figure,.photo-trio figure,.tenet';
     var els = [].slice.call(document.querySelectorAll(sel));
     els.forEach(function(el){ el.classList.add('fx-reveal'); });
     ['.city-grid','.gallery','.photo-trio','.tenets'].forEach(function(ws){
       var w=document.querySelector(ws); if(!w) return;
-      [].slice.call(w.children).forEach(function(c,i){ if(c.classList.contains('fx-reveal')) c.style.transitionDelay=((i%6)*0.07)+'s'; });
+      [].slice.call(w.children).forEach(function(c,i){ if(c.classList.contains('fx-reveal')) c.style.transitionDelay=((i%6)*0.06)+'s'; });
     });
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('fx-in'); io.unobserve(e.target); } });
-    }, { rootMargin:'0px 0px -10% 0px', threshold:0.06 });
-    els.forEach(function(el){ io.observe(el); });
+    function reveal(){
+      for(var i=els.length-1;i>=0;i--){
+        var r=els[i].getBoundingClientRect();
+        if(r.top < (window.innerHeight||0)*0.92){ els[i].classList.add('fx-in'); els.splice(i,1); }
+      }
+    }
+    reveal();
+    window.addEventListener('scroll', reveal, {passive:true});
+    window.addEventListener('resize', reveal);
+    // failsafe: never leave anything hidden
+    setTimeout(function(){ els.forEach(function(el){ el.classList.add('fx-in'); }); }, 4000);
   }
 })();
 </script>
