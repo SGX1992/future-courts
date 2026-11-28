@@ -302,7 +302,7 @@ main{display:block}
 .mq-dot{color:var(--label); font-size:.9rem; opacity:.55}
 
 /* ---------- invitational / founder / seal ---------- */
-.cohort{display:grid; grid-template-columns:1.25fr .75fr; gap:clamp(2.4rem,6vw,5rem); align-items:start}
+.cohort{display:grid; grid-template-columns:1fr; gap:clamp(2.4rem,6vw,5rem); align-items:start; max-width:62rem}
 .cohort .seal-wrap{position:sticky; top:120px; display:flex; justify-content:center}
 .seal{width:min(280px,80%); height:auto}
 @media (max-width:860px){ .cohort{grid-template-columns:1fr} .cohort .seal-wrap{position:static; order:-1} }
@@ -355,8 +355,8 @@ main{display:block}
 /* ---------- motion: reveals, rise, cursor, glare ---------- */
 .rise{opacity:0; transform:translateY(16px); animation:rise .9s var(--ease-lux) forwards}
 .r2{animation-delay:.1s}.r3{animation-delay:.2s}.r4{animation-delay:.3s}.r5{animation-delay:.4s}
-.fx-reveal{opacity:0; transform:translateY(26px); transition:opacity .9s var(--ease-lux), transform .9s var(--ease-lux); will-change:opacity,transform}
-.fx-reveal.fx-in{opacity:1; transform:none}
+.fx-reveal{opacity:0; transform:translateY(26px); filter:blur(7px); transition:opacity .9s var(--ease-lux), transform .9s var(--ease-lux), filter .9s var(--ease-lux); will-change:opacity,transform,filter}
+.fx-reveal.fx-in{opacity:1; transform:none; filter:blur(0)}
 /* neutralise any leftover old-motion artefacts (hero word-split, intro curtain, progress bar) */
 #fc-intro, .scroll-progress{display:none !important}
 .hero h1 .w{display:inline !important; transform:none !important; opacity:1 !important}
@@ -368,12 +368,19 @@ main{display:block}
 @media (hover:none){.glare{display:none}}
 
 @media (hover:hover) and (pointer:fine){
-  .fc-cursor{position:fixed; left:0; top:0; z-index:10000; pointer-events:none; mix-blend-mode:difference; will-change:transform}
-  .fc-cursor .ring{position:absolute; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,255,255,.9);
-    transition:width .32s var(--ease-lux), height .32s var(--ease-lux), background .3s ease, opacity .3s ease}
-  .fc-cursor .dot{position:absolute; width:6px; height:6px; border-radius:50%; background:#fff; transition:opacity .3s ease}
-  .fc-cursor.is-link .ring{width:58px; height:58px; background:#fff}
+  /* DSO-style cursor: a quiet dot normally; a neon disc blooms on interactive hover with a contextual label */
+  .fc-cursor{position:fixed; left:0; top:0; z-index:10000; pointer-events:none; will-change:transform}
+  .fc-cursor .dot{position:absolute; left:0; top:0; width:7px; height:7px; border-radius:50%;
+    background:var(--chalk); mix-blend-mode:difference; transform:translate(-50%,-50%); transition:opacity .25s ease}
+  .fc-cursor .ring{position:absolute; left:0; top:0; display:grid; place-items:center;
+    width:78px; height:78px; border-radius:50%; background:var(--brass);
+    transform:translate(-50%,-50%) scale(.2); opacity:0;
+    transition:transform .5s var(--ease-lux), opacity .3s ease}
+  .fc-cursor .ring .cl{font-family:var(--sans); font-weight:700; font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--court); white-space:nowrap; opacity:0; transition:opacity .25s ease .05s}
   .fc-cursor.is-link .dot{opacity:0}
+  .fc-cursor.is-link .ring{transform:translate(-50%,-50%) scale(1); opacity:1}
+  .fc-cursor.is-link .ring .cl{opacity:1}
   .fc-cursor.is-hidden{opacity:0}
 }
 
@@ -432,7 +439,7 @@ main{display:block}
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   .rise,.court .draw{animation:none; opacity:1; transform:none; stroke-dashoffset:0}
-  .fx-reveal{opacity:1!important; transform:none!important}
+  .fx-reveal{opacity:1!important; transform:none!important; filter:none!important}
   .hero-aurora .au,.marquee-track{animation:none}
   .hero-particles{display:none}
   .fc-cursor{display:none!important}
@@ -946,20 +953,22 @@ main{display:block}
   if(!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var c=document.createElement('div'); c.className='fc-cursor is-hidden';
-  c.innerHTML='<div class="ring"></div><div class="dot"></div>';
+  c.innerHTML='<div class="ring"><span class="cl"></span></div><div class="dot"></div>';
   document.body.appendChild(c);
-  var dot=c.querySelector('.dot'), ring=c.querySelector('.ring');
+  var lab=c.querySelector('.cl');
   var mx=innerWidth/2,my=innerHeight/2, rx=mx,ry=my, has=false;
   addEventListener('mousemove',function(e){ mx=e.clientX; my=e.clientY; if(!has){has=true;c.classList.remove('is-hidden');} }, {passive:true});
-  function loop(){
-    rx+=(mx-rx)*0.2; ry+=(my-ry)*0.2;
-    dot.style.transform='translate('+mx+'px,'+my+'px) translate(-50%,-50%)';
-    ring.style.transform='translate('+rx+'px,'+ry+'px) translate(-50%,-50%)';
-    requestAnimationFrame(loop);
-  }
+  function loop(){ rx+=(mx-rx)*0.2; ry+=(my-ry)*0.2; c.style.transform='translate('+rx+'px,'+ry+'px)'; requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
-  var sel='a,button,.btn,.city,.city-go,.langsw-toggle,[role=button]';
-  addEventListener('mouseover',function(e){ if(e.target.closest&&e.target.closest(sel)) c.classList.add('is-link'); }, {passive:true});
+  var sel='a,button,.btn,.city,.citylink,.city-go,.langsw-toggle,[role=button]';
+  function labelFor(el){
+    var d=el.closest('[data-cursor]'); if(d) return d.getAttribute('data-cursor');
+    if(el.closest('.city,.citylink,.city-go')) return 'View';
+    if(el.closest('.btn-primary')) return 'Request';
+    if(el.closest('.langsw-toggle')) return 'Lang';
+    return 'Open';
+  }
+  addEventListener('mouseover',function(e){ var t=e.target.closest&&e.target.closest(sel); if(t){ lab.textContent=labelFor(t); c.classList.add('is-link'); } }, {passive:true});
   addEventListener('mouseout',function(e){ var to=e.relatedTarget; if(!(to&&to.closest&&to.closest(sel))) c.classList.remove('is-link'); }, {passive:true});
   document.addEventListener('mouseleave',function(){ c.classList.add('is-hidden'); });
   document.addEventListener('mouseenter',function(){ c.classList.remove('is-hidden'); });
